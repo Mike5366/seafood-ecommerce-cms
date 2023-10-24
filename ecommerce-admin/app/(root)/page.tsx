@@ -1,11 +1,23 @@
-import { UserButton } from "@clerk/nextjs";
+"use client";
+
+import { Modal } from "@/components/ui/modal";
+import { useEffect, useState } from "react";
 
 const SetupPage = () => {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(true);
+  },[]);
+  
+
   return (
     <div className="p-4">
-      <UserButton afterSignOutUrl="/" />
+      <Modal title="Test" description="Test Desc" isOpen={open} onClose={() => {}}>
+        Children
+      </Modal>
     </div>
-  )
-}
+  );
+};
 
 export default SetupPage;
