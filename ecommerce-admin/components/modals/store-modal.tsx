@@ -5,7 +5,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useStoreModal } from "@/app/(root)/hooks/use-store-modal";
+import { useStoreModal } from "@/hooks/use-store-modal";
 import { Modal } from "@/components/ui/modal";
 import {
   Form,
@@ -43,6 +43,7 @@ export const StoreModal = () => {
       const response = await axios.post("/api/stores", values);
 
       toast.success("Store created.");
+      window.location.assign(`/${response.data.id}`); //refresh the page to 100% load the database ( different from redirect() )
     } catch (error) {
       toast.error("Something went wrong.");
     } finally {
