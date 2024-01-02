@@ -62,7 +62,6 @@ export async function PATCH(
       return new NextResponse("Unauthorize", { status: 403 });
     }
 
-    console.log(prismadb);
     const billboard = await prismadb.billboard.updateMany({
       where: {
         id: params.billboardId,
@@ -75,6 +74,7 @@ export async function PATCH(
 
     return NextResponse.json(billboard);
   } catch (error) {
+    console.log("{PRISMA]", prismadb);
     console.log("{BILLBOARD_PATCH]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
