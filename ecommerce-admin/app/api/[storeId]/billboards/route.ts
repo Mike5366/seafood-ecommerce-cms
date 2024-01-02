@@ -12,8 +12,7 @@ export async function POST(
     const body = await req.json();
 
     const { label, imageUrl } = body;
-    console.log("{LABEL}", label, imageUrl);
-    console.log(auth());
+
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
@@ -30,7 +29,7 @@ export async function POST(
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-    const storeByUserId = await prisma?.store.findFirst({
+    const storeByUserId = await prismadb.store.findFirst({
         where: {
             id: params.storeId,
             userId
