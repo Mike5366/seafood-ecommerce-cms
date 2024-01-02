@@ -71,6 +71,7 @@ export async function PATCH(
         imageUrl,
       },
     });
+    console.log(prismadb);
 
     return NextResponse.json(billboard);
   } catch (error) {
