@@ -110,6 +110,7 @@ export async function DELETE(
         id: params.billboardId,
       },
     });
+    console.log(prismadb);
 
     return NextResponse.json(billboard);
   } catch (error) {
