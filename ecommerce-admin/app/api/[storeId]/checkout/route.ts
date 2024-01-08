@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 import { stripe } from "@/lib/stripe";
 import prismadb from "@/lib/prismadb";
+import { OrderItem } from "@prisma/client";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -18,31 +19,46 @@ export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
-  const { productIds } = await req.json();
+  const { items } = await req.json();
 
-  if (!productIds || productIds.length === 0) {
+  if (!items || items.length === 0) {
     return new NextResponse("Product ids are required", { status: 400 });
   }
 
-  const products = await prismadb.product.findMany({
-    where: {
-      id: {
-        in: productIds,
+  for (let item of items) {
+    const product = await prismadb.product.findFirst({
+      where: {
+        id: item.product.id,
       },
-    },
-  });
+    });
+
+    if (product && item.quantity > product.inventory) {
+      return NextResponse.json(
+        {
+          message:
+            "Checkout failed.\nOnly " +
+            product?.inventory +
+            " " +
+            item.product.name +
+            " left in stock",
+          success: false,
+        },
+        { headers: corsHeaders }
+      );
+    }
+  }
 
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
-  products.forEach((product) => {
+  items.forEach((item: any) => {
     line_items.push({
-      quantity: 1,
+      quantity: item.quantity,
       price_data: {
         currency: "USD",
         product_data: {
-          name: product.name,
+          name: item.product.name,
         },
-        unit_amount: product.price.toNumber() * 100,
+        unit_amount: item.product.price * 100,
       },
     });
   });
@@ -52,12 +68,13 @@ export async function POST(
       storeId: params.storeId,
       isPaid: false,
       orderItems: {
-        create: productIds.map((productId: string) => ({
+        create: items.map((item: any) => ({
           product: {
             connect: {
-              id: productId,
+              id: item.product.id,
             },
           },
+          quantity: item.quantity,
         })),
       },
     },
@@ -77,5 +94,8 @@ export async function POST(
     },
   });
 
-  return NextResponse.json({ url: session.url }, { headers: corsHeaders });
+  return NextResponse.json(
+    { url: session.url, success: true },
+    { headers: corsHeaders }
+  );
 }

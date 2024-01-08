@@ -42,6 +42,7 @@ export async function PATCH(
     const {
       name,
       price,
+      inventory,
       categoryId,
       colorId,
       sizeId,
@@ -64,6 +65,10 @@ export async function PATCH(
 
     if (!price) {
       return new NextResponse("Price is required", { status: 400 });
+    }
+
+    if (inventory < 0) {
+      return new NextResponse("Inventory is required", { status: 400 });
     }
 
     if (!categoryId) {
@@ -100,6 +105,7 @@ export async function PATCH(
       data: {
         name,
         price,
+        inventory,
         categoryId,
         colorId,
         sizeId,

@@ -51,17 +51,17 @@ export async function POST(req: Request) {
       },
     });
 
-    const productIds = order.orderItems.map((orderItem) => orderItem.productId);
-
-    await prismadb.product.updateMany({
-      where: {
-        id: {
-          in: [...productIds],
+    order.orderItems.map(async (orderItem) => {
+      await prismadb.product.update({
+        where: {
+          id: orderItem.productId,
         },
-      },
-      data: {
-        isArchived: true,
-      },
+        data: {
+          inventory: {
+            decrement: orderItem.quantity,
+          },
+        },
+      });
     });
   }
 

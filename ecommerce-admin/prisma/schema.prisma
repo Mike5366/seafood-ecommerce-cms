@@ -87,6 +87,7 @@ model Product {
   category   Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name       String
   price      Decimal
+  inventory  Decimal
   isFeatured Boolean     @default(false)
   isArchived Boolean     @default(false)
   sizeId     String
@@ -135,6 +136,7 @@ model OrderItem {
   order     Order   @relation(fields: [orderId], references: [id])
   productId String
   product   Product @relation(fields: [productId], references: [id])
+  quantity  Decimal
 
   @@index([orderId])
   @@index([productId])

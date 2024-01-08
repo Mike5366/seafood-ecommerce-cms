@@ -14,6 +14,7 @@ export async function POST(
     const {
       name,
       price,
+      inventory,
       categoryId,
       colorId,
       sizeId,
@@ -22,7 +23,6 @@ export async function POST(
       isArchived,
     } = body;
 
-    // console.log(auth());
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
@@ -37,6 +37,10 @@ export async function POST(
 
     if (!price) {
       return new NextResponse("Price is required", { status: 400 });
+    }
+
+    if (inventory < 0) {
+      return new NextResponse("Inventory is required", { status: 400 });
     }
 
     if (!categoryId) {
@@ -70,6 +74,7 @@ export async function POST(
       data: {
         name,
         price,
+        inventory,
         categoryId,
         sizeId,
         colorId,
@@ -114,6 +119,7 @@ export async function GET(
         sizeId,
         isFeatured: isFeatured ? true : undefined,
         isArchived: false,
+        inventory: { gt: 0 },
       },
       include: {
         images: true,
@@ -122,8 +128,8 @@ export async function GET(
         size: true,
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: "desc",
+      },
     });
 
     return NextResponse.json(products);
