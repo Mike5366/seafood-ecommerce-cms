@@ -20,7 +20,6 @@ export async function GET(
         images: true,
         category: true,
         size: true,
-        color: true,
       },
     });
 
@@ -44,7 +43,6 @@ export async function PATCH(
       price,
       inventory,
       categoryId,
-      colorId,
       sizeId,
       images,
       isFeatured,
@@ -79,10 +77,6 @@ export async function PATCH(
       return new NextResponse("Size Id is required", { status: 400 });
     }
 
-    if (!colorId) {
-      return new NextResponse("Color Id is required", { status: 400 });
-    }
-
     if (!params.productId) {
       return new NextResponse("Product id is required", { status: 400 });
     }
@@ -107,7 +101,6 @@ export async function PATCH(
         price,
         inventory,
         categoryId,
-        colorId,
         sizeId,
         isFeatured,
         isArchived,

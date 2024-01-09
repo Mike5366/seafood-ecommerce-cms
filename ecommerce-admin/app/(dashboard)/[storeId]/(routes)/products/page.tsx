@@ -12,7 +12,6 @@ const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
     include: {
       category: true,
       size: true,
-      color: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -28,7 +27,6 @@ const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
     inventory: item.inventory.toString(),
     category: item.category.name,
     size: item.size.name,
-    color: item.color.value,
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
 
