@@ -44,6 +44,7 @@ export async function PATCH(
       inventory,
       categoryId,
       sizeId,
+      description,
       images,
       isFeatured,
       isArchived,
@@ -102,6 +103,7 @@ export async function PATCH(
         inventory,
         categoryId,
         sizeId,
+        description,
         isFeatured,
         isArchived,
         images: {

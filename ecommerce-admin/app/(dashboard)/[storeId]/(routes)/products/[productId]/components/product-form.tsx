@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ProductFormProps {
   initialData:
@@ -51,6 +52,7 @@ const formSchema = z.object({
   inventory: z.coerce.number().min(0),
   categoryId: z.string().min(1),
   sizeId: z.string().min(1),
+  description: z.string().min(0),
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
 });
@@ -76,7 +78,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData
-      ? { ...initialData, price: parseFloat(String(initialData?.price)), inventory: parseInt(String(initialData?.inventory))}
+      ? {
+          ...initialData,
+          price: parseFloat(String(initialData?.price)),
+          inventory: parseInt(String(initialData?.inventory)),
+        }
       : {
           name: "",
           images: [],
@@ -84,6 +90,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           inventory: 0,
           categoryId: "",
           sizeId: "",
+          description: "",
           isFeatured: false,
           isArchived: false,
         },
@@ -206,7 +213,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     <Input
                       type="number"
                       disabled={loading}
-                      placeholder="9.99"
+                      placeholder="0"
                       {...field}
                     />
                   </FormControl>
@@ -296,6 +303,26 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 </FormItem>
               )}
             />
+          </div>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    disabled={loading}
+                    placeholder="Product description"
+                    maxLength={1000}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
               name="isFeatured"

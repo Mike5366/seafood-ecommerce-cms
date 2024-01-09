@@ -66,24 +66,25 @@ model Size {
 }
 
 model Product {
-  id         String      @id @default(uuid())
-  storeId    String
-  store      Store       @relation("StoreToProduct", fields: [storeId], references: [id])
-  categoryId String
-  category   Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
-  name       String
-  price      Decimal
-  inventory  Decimal
-  isFeatured Boolean     @default(false)
-  isArchived Boolean     @default(false)
-  sizeId     String
-  size       Size        @relation(fields: [sizeId], references: [id])
-  images     Image[]
-  orderItems OrderItem[]
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  id          String      @id @default(uuid())
+  storeId     String
+  store       Store       @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId  String
+  category    Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  name        String
+  price       Decimal
+  inventory   Decimal
+  isFeatured  Boolean     @default(false)
+  isArchived  Boolean     @default(false)
+  sizeId      String
+  size        Size        @relation(fields: [sizeId], references: [id])
+  description String
+  images      Image[]
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 
-  @@index([storeId]) 
+  @@index([storeId])
   @@index([categoryId])
   @@index([sizeId])
 }
