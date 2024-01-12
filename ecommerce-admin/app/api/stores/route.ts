@@ -8,9 +8,8 @@ export async function POST(req: Request) {
     const { userId } = auth();
     const body = await req.json();
 
-    const { name } = body;
+    const { name, billboardId } = body;
 
-    // console.log(auth());
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -23,6 +22,7 @@ export async function POST(req: Request) {
       data: {
         name,
         userId,
+        billboardId,
       },
     });
 

@@ -12,16 +12,20 @@ datasource db {
 }
 
 model Store {
-  id         String      @id @default(uuid())
-  name       String
-  userId     String
-  billboards Billboard[] @relation("StoreToBillboard")
-  categories Category[]  @relation("StoreToCategory")
-  sizes      Size[]      @relation("StoreToSize")
-  product    Product[]   @relation("StoreToProduct")
-  order      Order[]     @relation("StoreToOrder")
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  id          String      @id @default(uuid())
+  name        String
+  userId      String
+  billboardId String
+  billboard   Billboard   @relation("StoreToHomeBillboard", fields: [billboardId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  billboards  Billboard[] @relation("StoreToBillboard")
+  categories  Category[]  @relation("StoreToCategory")
+  sizes       Size[]      @relation("StoreToSize")
+  product     Product[]   @relation("StoreToProduct")
+  order       Order[]     @relation("StoreToOrder")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([billboardId])
 }
 
 model Billboard {
@@ -33,6 +37,7 @@ model Billboard {
   categories Category[]
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
+  stores     Store[]    @relation("StoreToHomeBillboard")
 
   @@index([storeId])
 }

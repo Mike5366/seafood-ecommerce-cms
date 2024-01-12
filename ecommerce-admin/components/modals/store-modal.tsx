@@ -22,6 +22,7 @@ import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
   name: z.string().min(1),
+  billboardId: z.string(),
 });
 
 export const StoreModal = () => {
@@ -33,6 +34,7 @@ export const StoreModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      billboardId: "",
     },
   });
 
