@@ -83,7 +83,7 @@ model Product {
   isArchived  Boolean     @default(false)
   sizeId      String
   size        Size        @relation(fields: [sizeId], references: [id])
-  description String
+  description String?     @db.Text()
   images      Image[]
   orderItems  OrderItem[]
   createdAt   DateTime    @default(now())
