@@ -314,7 +314,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                   <Textarea
                     disabled={loading}
                     placeholder="Product description"
-                    maxLength={1000}
+                    maxLength={10000}
                     {...field}
                   />
                 </FormControl>
